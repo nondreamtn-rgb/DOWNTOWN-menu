@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Downtown Restaurant Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-color': '#2D1810',
+                        'primary-text': '#F5F5F5',
+                        'heading-color': '#E8E2D5',
+                        'accent-red': '#FF6B6B',
+                        'accent-brown': '#8B4513',
+                        'dashed-line-color': '#AAAAAA',
+                        'description-text': '#D3D3D3',
+                    },
+                    fontFamily: {
+                        serif: ['DM Serif Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                    spacing: {
+                        'xs': '0.5rem',
+                        'sm': '1rem',
+                        'md': '1.5rem',
+                        'lg': '2rem',
+                        'xl': '3rem',
+                    },
+                    fontSize: {
+                        'base': '1rem',
+                        'sm': '0.875rem',
+                        'xs': '0.75rem',
+                        'h2': '2rem',
+                        'h3': '1.5rem',
+                        'item-name': '1.1rem',
+                        'description': '0.9rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom CSS Variables & Core Styles (as provided by user) */
+        :root {
+            --bg-color: #E8E2D5;
+            --primary-text-color: #333333;
+            --heading-color: #222222;
+            --accent-green: #4CAF50;
+            --dashed-line-color: #AAAAAA;
+            --description-text-color: #444444;
+
+            --font-serif: 'DM Serif Display', Georgia, serif;
+            --font-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+
+            --font-light: 300;
+            --font-regular: 400;
+            --font-semi-bold: 500;
+            --font-bold: 700;
+
+            --base-size: 1rem;
+            --small-size: 0.875rem;
+            --extra-small-size: 0.75rem;
+            --h2-size: 2rem;
+            --h3-size: 1.5rem;
+            --item-name-size: 1.1rem;
+            --description-size: 0.9rem;
+
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+        }
+
+        html {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        body {
+            margin: 0;
+            padding: var(--spacing-lg);
+            font-family: var(--font-sans);
+            color: var(--primary-text-color);
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238B4513' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M0 0h3v3H0V0zm3 3h3v3H3V3z'/%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(255, 107, 107, 0.7) 0,
+                rgba(255, 107, 107, 0.7) 10px,
+                rgba(139, 69, 19, 0.7) 10px,
+                rgba(139, 69, 19, 0.7) 20px
+            );
+            z-index: 10;
+        }
+
+        a:focus, label:focus {
+            outline: 2px solid var(--accent-green);
+            outline-offset: 2px;
+        }
+
+        .bg-gear-1, .bg-gear-2 {
+            position: absolute;
+            z-index: -2;
+            fill: var(--heading-color);
+            opacity: 0.08;
+        }
+
+        .bg-gear-1 {
+            top: 5%;
+            right: 10%;
+            width: 120px;
+            height: 120px;
+            transform: rotate(30deg);
+        }
+
+        .bg-gear-2 {
+            bottom: 15%;
+            left: 8%;
+            width: 80px;
+            height: 80px;
+            transform: rotate(-70deg);
+            fill: var(--accent-green);
+            opacity: 0.06;
+        }
+
+        .menu-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: var(--bg-color);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            padding: var(--spacing-lg);
+            position: relative; /* For gear positioning relative to wrapper */
+            z-index: 1; /* Ensure content is above body gears */
+        }
+
+        .menu-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            padding-top: var(--spacing-md);
+        }
+
+        .menu-header h1 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem; /* Larger for header */
+            color: var(--heading-color);
+            margin: 0;
+            line-height: 1;
+            letter-spacing: -0.05em;
+        }
+
+        .menu-header p {
+            font-size: 1.2rem;
+            color: var(--description-text-color);
+            margin-top: var(--spacing-xs);
+            font-weight: var(--font-light);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+            margin-top: var(--spacing-md);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: var(--small-size);
+            font-weight: var(--font-semi-bold);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-order {
+            background-color: var(--accent-red);
+            color: var(--bg-color);
+        }
+
+        .btn-order:hover {
+            background-color: #E55A5A;
+        }
+
+        .btn-call {
+            background-color: var(--accent-brown);
+            color: var(--primary-text-color);
+        }
+
+        .btn-call:hover {
+            background-color: #A0522D;
+        }
+
+        .btn-view {
+            background-color: transparent;
+            color: var(--primary-text-color);
+            border: 2px solid var(--accent-red);
+        }
+
+        .btn-view:hover {
+            background-color: var(--accent-red);
+            color: var(--bg-color);
+        }
+
+        .menu-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-lg);
+            justify-content: center;
+            padding: 0 var(--spacing-sm);
+        }
+
+        .menu-filter input[type="radio"] {
+            display: none;
+        }
+
+        .menu-filter label {
+            cursor: pointer;
+            padding: 0.6rem var(--spacing-sm);
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 9999px;
+            font-size: var(--small-size);
+            font-weight: var(--font-semi-bold);
+            color: var(--primary-text-color);
+            transition: all 0.2s ease-in-out;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .menu-filter input[type="radio"]:checked + label {
+            background-color: var(--accent-red);
+            color: var(--bg-color);
+            border-color: var(--accent-red);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .menu-filter label:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        .menu-filter input[type="radio"]:checked + label:hover {
+            background-color: var(--heading-color); /* Keep checked state on hover */
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xl);
+        }
+
+        .menu-column {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+        }
+
+        .menu-category-section {
+            padding: var(--spacing-md) 0;
+            display: none; /* Hidden by default for filter logic */
+        }
+
+        /* Filter logic */
+        #filter-all:checked ~ .menu-grid .menu-category-section,
+        #filter-salades:checked ~ .menu-grid .menu-category-section[data-category="salades"],
+        #filter-chicha:checked ~ .menu-grid .menu-category-section[data-category="chicha"],
+        #filter-desserts:checked ~ .menu-grid .menu-category-section[data-category="desserts"],
+        #filter-plateaux:checked ~ .menu-grid .menu-category-section[data-category="plateaux"],
+        #filter-seafood:checked ~ .menu-grid .menu-category-section[data-category="seafood"],
+        #filter-plats:checked ~ .menu-grid .menu-category-section[data-category="plats"],
+        #filter-boissons:checked ~ .menu-grid .menu-category-section[data-category="boissons"],
+        #filter-jus:checked ~ .menu-grid .menu-category-section[data-category="jus"],
+        #filter-burgers:checked ~ .menu-grid .menu-category-section[data-category="burgers"],
+        #filter-sandwich:checked ~ .menu-grid .menu-category-section[data-category="sandwich"],
+        #filter-milkshakes:checked ~ .menu-grid .menu-category-section[data-category="milkshakes"],
+        #filter-jwajem:checked ~ .menu-grid .menu-category-section[data-category="jwajem"],
+        #filter-smoothie:checked ~ .menu-grid .menu-category-section[data-category="smoothie-bowl"],
+        #filter-mojitos:checked ~ .menu-grid .menu-category-section[data-category="mojitos"],
+        #filter-cocktails:checked ~ .menu-grid .menu-category-section[data-category="cocktails"],
+        #filter-frappos:checked ~ .menu-grid .menu-category-section[data-category="frappoccinos"],
+        #filter-detox:checked ~ .menu-grid .menu-category-section[data-category="detox"],
+        #filter-pizzas:checked ~ .menu-grid .menu-category-section[data-category="pizzas"],
+        #filter-makloub:checked ~ .menu-grid .menu-category-section[data-category="makloub"],
+        #filter-panuozzo:checked ~ .menu-grid .menu-category-section[data-category="panuozzo"],
+        #filter-breakfast:checked ~ .menu-grid .menu-category-section[data-category="breakfast"],
+        #filter-kids:checked ~ .menu-grid .menu-category-section[data-category="kids"],
+        #filter-mio:checked ~ .menu-grid .menu-category-section[data-category="mio"]
+        {
+            display: block;
+        }
+        
+        /* Show all if no filter is explicitly checked or if 'All' is checked */
+        .menu-grid .menu-category-section {
+             display: block; /* Default to show all if JS filter isn't present, or for "All" view */
+        }
+        #filter-salades:checked ~ .menu-grid .menu-category-section,
+        #filter-chicha:checked ~ .menu-grid .menu-category-section,
+        #filter-desserts:checked ~ .menu-grid .menu-category-section,
+        #filter-plateaux:checked ~ .menu-grid .menu-category-section,
+        #filter-seafood:checked ~ .menu-grid .menu-category-section,
+        #filter-plats:checked ~ .menu-grid .menu-category-section,
+        #filter-boissons:checked ~ .menu-grid .menu-category-section,
+        #filter-jus:checked ~ .menu-grid .menu-category-section,
+        #filter-burgers:checked ~ .menu-grid .menu-category-section,
+        #filter-sandwich:checked ~ .menu-grid .menu-category-section,
+        #filter-milkshakes:checked ~ .menu-grid .menu-category-section,
+        #filter-jwajem:checked ~ .menu-grid .menu-category-section,
+        #filter-smoothie:checked ~ .menu-grid .menu-category-section,
+        #filter-mojitos:checked ~ .menu-grid .menu-category-section,
+        #filter-cocktails:checked ~ .menu-grid .menu-category-section,
+        #filter-frappos:checked ~ .menu-grid .menu-category-section,
+        #filter-detox:checked ~ .menu-grid .menu-category-section,
+        #filter-pizzas:checked ~ .menu-grid .menu-category-section,
+        #filter-makloub:checked ~ .menu-grid .menu-category-section,
+        #filter-panuozzo:checked ~ .menu-grid .menu-category-section,
+        #filter-breakfast:checked ~ .menu-grid .menu-category-section,
+        #filter-kids:checked ~ .menu-grid .menu-category-section,
+        #filter-mio:checked ~ .menu-grid .menu-category-section
+        {
+            display: none; /* Hide all other sections when a specific filter is checked */
+        }
+
+
+        .category-heading {
+            font-family: var(--font-serif);
+            font-weight: var(--font-bold);
+            font-size: var(--h2-size);
+            color: var(--heading-color);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .category-heading.title-case {
+            text-transform: none;
+        }
+
+        .category-heading.heading-with-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: none;
+        }
+
+        .heading-price {
+            background-color: var(--accent-green);
+            color: var(--bg-color);
+            padding: 0.2em 0.6em;
+            border-radius: 9999px;
+            font-size: var(--small-size);
+            font-weight: var(--font-semi-bold);
+            white-space: nowrap;
+            margin-left: var(--spacing-sm);
+        }
+
+        .sub-category-heading {
+            font-family: var(--font-serif);
+            font-weight: var(--font-bold);
+            font-size: var(--h3-size);
+            color: var(--primary-text-color);
+            margin-top: var(--spacing-md);
+            margin-bottom: var(--spacing-xs);
+            text-transform: capitalize;
+            padding-bottom: var(--spacing-xs);
+            border-bottom: 1px dotted rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Special Category Styling */
+        #chicha .category-heading {
+            border-bottom: none;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        #chicha .category-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: var(--accent-green);
+            border-radius: 2px;
+        }
+
+        #detox .category-heading {
+            background-color: var(--heading-color);
+            color: var(--bg-color);
+            padding: 0.5rem var(--spacing-sm);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+            border-bottom: none;
+        }
+        #detox .category-heading .heading-price {
+            background: none;
+            color: var(--accent-green);
+            padding: 0;
+            font-size: var(--h3-size);
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: var(--spacing-xs) 0;
+            margin-bottom: var(--spacing-xs);
+            transition: background-color 0.15s ease-in-out;
+            cursor: default;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(0,0,0,0.02);
+        }
+
+        .item-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            margin-right: var(--spacing-xs);
+        }
+
+        .item-header {
+            display: flex;
+            align-items: baseline;
+            flex-grow: 1;
+        }
+
+        .item-name {
+            font-family: var(--font-sans);
+            font-weight: var(--font-semi-bold);
+            font-size: var(--item-name-size);
+            color: var(--primary-text-color);
+            margin-right: var(--spacing-xs);
+            white-space: nowrap; /* Prevent wrapping for short names */
+        }
+
+        .item-description {
+            font-family: var(--font-sans);
+            font-weight: var(--font-light);
+            font-size: var(--description-size);
+            color: var(--description-text-color);
+            line-height: 1.3;
+            margin-top: 0.2em;
+            flex-basis: 100%; /* Ensure description takes full width below name */
+            text-wrap: balance;
+        }
+
+        .item-separator {
+            flex-grow: 1;
+            border-bottom: 1px dotted var(--dashed-line-color);
+            margin: 0 var(--spacing-xs);
+        }
+
+        .item-price {
+            font-family: var(--font-sans);
+            font-weight: var(--font-semi-bold);
+            font-size: var(--item-name-size);
+            color: var(--primary-text-color);
+            white-space: nowrap;
+            margin-left: var(--spacing-xs);
+        }
+
+        .menu-item.accent-price .item-price {
+            color: var(--accent-red);
+        }
+
+        .menu-item-kyufi {
+            background-color: var(--accent-green);
+            color: var(--bg-color);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            margin-bottom: var(--spacing-xs);
+        }
+        .menu-item-kyufi .item-name,
+        .menu-item-kyufi .item-price {
+            color: var(--bg-color);
+        }
+        .menu-item-kyufi .item-separator {
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+        }
+
+        .multi-price-header {
+            display: grid;
+            grid-template-columns: 1fr auto auto; /* Name | Price 1 | Price 2 */
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-xs);
+            padding: 0 var(--spacing-xs);
+            font-weight: var(--font-semi-bold);
+            color: var(--heading-color);
+            font-size: var(--small-size);
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            padding-bottom: var(--spacing-xs);
+        }
+        .multi-price-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto; /* Name | Price 1 | Price 2 */
+            gap: var(--spacing-xs);
+            padding: var(--spacing-xs) 0;
+        }
+        .multi-price-item .item-name {
+            grid-column: 1;
+            font-size: var(--item-name-size);
+        }
+        .multi-price-item .item-description {
+             grid-column: 1 / span 3; /* Description spans all columns */
+             margin-top: 0.2em;
+        }
+        .multi-price-item .item-price {
+            grid-column: auto;
+            font-size: var(--item-name-size);
+        }
+
+        .menu-item-breakfast {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-sm);
+            background-color: rgba(0,0,0,0.03);
+            border-radius: 8px;
+        }
+        .menu-item-breakfast .item-header {
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.5em;
+        }
+        .menu-item-breakfast .item-name {
+            font-size: var(--h3-size);
+            margin-right: var(--spacing-sm);
+        }
+        .menu-item-breakfast .item-price {
+            font-size: var(--h3-size);
+            color: var(--accent-green);
+        }
+        .menu-item-breakfast .item-description {
+            font-size: var(--small-size);
+            color: var(--description-text-color);
+            line-height: 1.5;
+            margin-top: 0;
+            flex-basis: auto; /* Override column behavior for description */
+        }
+        .menu-item-breakfast:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+
+        .category-info {
+            font-size: var(--small-size);
+            color: var(--description-text-color);
+            margin-top: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background-color: rgba(0,0,0,0.03);
+            border-left: 3px solid var(--accent-green);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .sandwich-subheading {
+            font-family: var(--font-serif);
+            font-weight: var(--font-semi-bold);
+            font-size: var(--item-name-size);
+            color: var(--heading-color);
+            text-transform: uppercase;
+            margin-top: var(--spacing-md);
+            margin-bottom: var(--spacing-xs);
+            padding-bottom: 0.2em;
+            border-bottom: 1px dotted rgba(0,0,0,0.1);
+        }
+
+        .detailed-item-article {
+            background-color: rgba(0,0,0,0.05);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-md);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .detailed-item-article .item-name {
+            font-size: var(--h3-size);
+            color: var(--heading-color);
+            font-family: var(--font-serif);
+            font-weight: var(--font-bold);
+            margin-bottom: var(--spacing-xs);
+            display: block;
+        }
+        .detailed-item-article .item-price {
+            font-size: var(--h3-size);
+            color: var(--accent-red);
+            font-weight: var(--font-bold);
+            margin-left: var(--spacing-sm);
+        }
+        .detailed-item-article .item-description {
+            font-size: var(--small-size);
+            line-height: 1.5;
+            margin-top: 0.5em;
+            color: var(--description-text-color);
+        }
+        .detailed-item-article .item-header {
+            justify-content: flex-start; /* Align name and price to start */
+            align-items: baseline;
+        }
+
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            .menu-wrapper {
+                padding: var(--spacing-md);
+            }
+            body {
+                padding: var(--spacing-md);
+            }
+            .menu-header h1 {
+                font-size: 3rem;
+            }
+        }
+
+
+        /* ENHANCED: Category section with background image */
+        .menu-category-section {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .menu-category-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(232, 226, 213, 0.93);
+            z-index: 0;
+        }
+
+        .menu-category-section > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Item images */
+        .menu-item {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: flex-start;
+            background: white;
+            padding: var(--spacing-sm);
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Breakfast items */
+        .menu-item-breakfast {
+            display: flex;
+            gap: var(--spacing-md);
+            background: white;
+            border-left: 4px solid var(--accent-green);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .menu-item-breakfast:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .breakfast-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .breakfast-content {
+            flex: 1;
+        }
+
+        /* Detailed items */
+        .detailed-item-article {
+            display: flex;
+            gap: var(--spacing-md);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .detailed-item-article:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .detailed-image {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .detailed-content {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .menu-item {
+                flex-direction: column;
+            }
+            
+            .item-image {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .breakfast-image,
+            .detailed-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-filter {
+                gap: var(--spacing-xs);
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: var(--spacing-xs);
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+            }
+            .menu-filter::-webkit-scrollbar {
+                display: none; /* Chrome, Safari */
+            }
+            .menu-filter label {
+                font-size: var(--extra-small-size);
+                padding: 0.5rem 0.8rem;
+            }
+            .menu-header h1 {
+                font-size: 2.5rem;
+            }
+            .menu-header p {
+                font-size: 1rem;
+            }
+            .category-heading {
+                font-size: 1.8rem;
+            }
+            .sub-category-heading, .detailed-item-article .item-name, .detailed-item-article .item-price {
+                font-size: var(--h3-size);
+            }
+            .menu-item-breakfast .item-name, .menu-item-breakfast .item-price {
+                font-size: var(--h3-size);
+            }
+        }
+    </style>
+</head>
+<body>
+    <svg class="bg-gear-1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50,0 A50,50 0 0 1 100,50 A50,50 0 0 1 50,100 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z M50,20 A30,30 0 0 0 20,50 A30,30 0 0 0 50,80 A30,30 0 0 0 80,50 A30,30 0 0 0 50,20 Z M50,15 L55,25 L45,25 Z M50,85 L55,75 L45,75 Z M15,50 L25,55 L25,45 Z M85,50 L75,55 L75,45 Z M22,22 L30,28 L28,30 Z M78,22 L70,28 L72,30 Z M22,78 L30,72 L28,70 Z M78,78 L70,72 L72,70 Z"/>
+    </svg>
+    <svg class="bg-gear-2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50,0 A50,50 0 0 1 100,50 A50,50 0 0 1 50,100 A50,50 0 0 1 0,50 A50,50 0 0 1 50,0 Z M50,20 A30,30 0 0 0 20,50 A30,30 0 0 0 50,80 A30,30 0 0 0 80,50 A30,30 0 0 0 50,20 Z M50,15 L55,25 L45,25 Z M50,85 L55,75 L45,75 Z M15,50 L25,55 L25,45 Z M85,50 L75,55 L75,45 Z M22,22 L30,28 L28,30 Z M78,22 L70,28 L72,30 Z M22,78 L30,72 L28,70 Z M78,78 L70,72 L72,70 Z"/>
+    </svg>
+
+    <div class="menu-wrapper">
+        <header class="menu-header">
+            <h1>Downtown Menu</h1>
+            <p>Industrial Chic Dining Experience</p>
+        </header>
+
+        <div class="menu-filter">
+            <input type="radio" id="filter-all" name="menu-filter" value="all" checked>
+            <label for="filter-all">All</label>
+
+            <input type="radio" id="filter-salades" name="menu-filter" value="salades">
+            <label for="filter-salades">Salades</label>
+
+            <input type="radio" id="filter-chicha" name="menu-filter" value="chicha">
+            <label for="filter-chicha">Chicha</label>
+
+            <input type="radio" id="filter-desserts" name="menu-filter" value="desserts">
+            <label for="filter-desserts">Desserts</label>
+
+            <input type="radio" id="filter-plateaux" name="menu-filter" value="plateaux">
+            <label for="filter-plateaux">Plateaux</label>
+
+            <input type="radio" id="filter-seafood" name="menu-filter" value="seafood">
+            <label for="filter-seafood">Sea Food</label>
+
+            <input type="radio" id="filter-plats" name="menu-filter" value="plats">
+            <label for="filter-plats">Nos Plats</label>
+
+            <input type="radio" id="filter-boissons" name="menu-filter" value="boissons">
+            <label for="filter-boissons">Boissons</label>
+            
+            <input type="radio" id="filter-jus" name="menu-filter" value="jus">
+            <label for="filter-jus">Jus</label>
+
+            <input type="radio" id="filter-burgers" name="menu-filter" value="burgers">
+            <label for="filter-burgers">Burgers</label>
+
+            <input type="radio" id="filter-sandwich" name="menu-filter" value="sandwich">
+            <label for="filter-sandwich">Sandwich</label>
+
+            <input type="radio" id="filter-milkshakes" name="menu-filter" value="milkshakes">
+            <label for="filter-milkshakes">Milkshakes</label>
+            
+            <input type="radio" id="filter-jwajem" name="menu-filter" value="jwajem">
+            <label for="filter-jwajem">Jwajem</label>
+
+            <input type="radio" id="filter-smoothie" name="menu-filter" value="smoothie-bowl">
+            <label for="filter-smoothie">Smoothie Bowl</label>
+
+            <input type="radio" id="filter-mojitos" name="menu-filter" value="mojitos">
+            <label for="filter-mojitos">Mojitos</label>
+
+            <input type="radio" id="filter-cocktails" name="menu-filter" value="cocktails">
+            <label for="filter-cocktails">Cocktails</label>
+
+            <input type="radio" id="filter-frappos" name="menu-filter" value="frappoccinos">
+            <label for="filter-frappos">Frappoccinos</label>
+
+            <input type="radio" id="filter-detox" name="menu-filter" value="detox">
+            <label for="filter-detox">Détox</label>
+
+            <input type="radio" id="filter-pizzas" name="menu-filter" value="pizzas">
+            <label for="filter-pizzas">Pizzas</label>
+
+            <input type="radio" id="filter-makloub" name="menu-filter" value="makloub">
+            <label for="filter-makloub">Makloub - Cornet</label>
+
+            <input type="radio" id="filter-panuozzo" name="menu-filter" value="panuozzo">
+            <label for="filter-panuozzo">Panuozzo</label>
+
+            <input type="radio" id="filter-breakfast" name="menu-filter" value="breakfast">
+            <label for="filter-breakfast">Petits Déjeuners</label>
+
+            <input type="radio" id="filter-kids" name="menu-filter" value="kids">
+            <label for="filter-kids">KIDS</label>
+
+            <input type="radio" id="filter-mio" name="menu-filter" value="mio">
+            <label for="filter-mio">Mio</label>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-column">
+
+                <section class="menu-category-section" data-category="salades" style="position: relative; background-image: url('https://chat.deepseek.com/share/xug60cjt7c23ulvkps'); background-size: cover; background-position: center;" style="background-image: url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1600');">
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200&h=200&fit=crop" alt="SALADE CESAR" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SALADE CESAR</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Coeur de laitue, tomates cerises, poulet grillé, croûtons, parmesan.</span>
+                        </div>
+                        <span class="item-price">18DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SALADE CAPRES</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Tomates cerises, mozzarella de buffala, basilic, roquette, balsamiques.</span>
+                        </div>
+                        <span class="item-price">19DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SALADE BURRATA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Roquette, tomates cerises, vinaigre de balsamique, tomates séchées, maïs, burrata.</span>
+                        </div>
+                        <span class="item-price">22DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SALADE CAMEMBERT</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Coeur de laitue, roquette, chips de parmesan, camembert roti, balsamique, sauce de noix.</span>
+                        </div>
+                        <span class="item-price">22DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" id="chicha" data-category="chicha" style="background-image: url('https://images.unsplash.com/photo-1583396854603-5f8b44b2c0b3?w=1600');">
+                    <h2 class="category-heading">Chicha</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">Chicha al fakher</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">(pomme, melon, raisin, pastèque, menthe, cerise, orange, chewing-gum, pêche, citron, rose, fraise, vanille, fruits, mixte)</span>
+                        </div>
+                        <span class="item-price">10DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">Chicha Orientale (Fumo)</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">(avec glaçon)</span>
+                        </div>
+                        <span class="item-price">20DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">Chicha Downtown (Boss)</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">25DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1597306559259-53c3dc47e3c7?w=200&h=200&fit=crop" alt="Chicha adalya" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">Chicha adalya</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">(love66, sheikh money, joker 777)</span>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="desserts" style="background-image: url('https://images.unsplash.com/photo-1488477181946-6428a0291777?w=1600');">
+                    <img src="https://via.placeholder.com/400x200/8B4513/FFFFFF?text=Desserts" alt="Desserts" style="width: 100%; max-width: 400px; height: auto; border-radius: 8px; margin-bottom: var(--spacing-md);">
+                    <h2 class="category-heading">Nos desserts</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CHEESECAKE A NOTRE FACON</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=200&h=200&fit=crop" alt="TIRAMISU NUTELLA SPÉCULOOS" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">TIRAMISU NUTELLA SPÉCULOOS</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=200&h=200&fit=crop" alt="FONDANT CHOCOLAT" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">FONDANT CHOCOLAT</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">10DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1627308595171-d1b5d67129c4?w=200&h=200&fit=crop" alt="FONDANT PISTACHE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">FONDANT PISTACHE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=200&h=200&fit=crop" alt="ASSIETTE 3 BOULES DE GLACE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">ASSIETTE 3 BOULES DE GLACE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?w=200&h=200&fit=crop" alt="ASSIETTE FRUITS DE SAISONS" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">ASSIETTE FRUITS DE SAISONS</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">25DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?w=200&h=200&fit=crop" alt="BANANA SPLIT" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">BANANA SPLIT</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">18DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200&h=200&fit=crop" alt="GÂTEAU MAISON" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">GÂTEAU MAISON</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="plateaux" style="background-image: url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1600');">
+                    <h2 class="category-heading heading-with-price">
+                        <span>Plateau pêcheur (2 Pax)</span>
+                        <span class="heading-price">60DT</span>
+                    </h2>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=200&h=200&fit=crop" alt="FRUITS DE MER" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">FRUITS DE MER</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Salade de fruits de mer, moules, crevettes, poulpe, riz, pomme.</span>
+                        </div>
+                    </div>
+                    <h2 class="category-heading heading-with-price" style="margin-top: var(--spacing-xl);">
+                        <span>Plateaux carnivores (2 Pax)</span>
+                        <span class="heading-price">48DT</span>
+                    </h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name"></span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Steak de veau, merguez, suprême de volailles, kebab, garnitures (légumes sautées ou riz).</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="seafood" style="background-image: url('https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=1600');">
+                    <h2 class="category-heading">Sea Food</h2>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1559737558-2f5a34e2c48a?w=200&h=200&fit=crop" alt="MARMITE PÊCHEUR" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">MARMITE PÊCHEUR</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Riz, salade de fruits de mer, calamar, crevettes, poulpes, moules, crevettes.</span>
+                        </div>
+                        <span class="item-price">38DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SEA FOOD SPÉCIAL DOWNTOWN</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Poisson grillé, crevettes grillées, seiche grillé, moules, poulpe, oja.</span>
+                        </div>
+                        <span class="item-price">44DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CREVETTES GRILLÉES</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Crevettes royales accompagné de glaçons et riz.</span>
+                        </div>
+                        <span class="item-price">48DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="plats" style="background-image: url('https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=1600');">
+                    <h2 class="category-heading title-case">Nos plats (Section 1)</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">Escalope grillée ou pannée</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">(servi avec 3 sauces, légumes sautés, riz)</span>
+                        </div>
+                        <span class="item-price">23DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">Cordon bleu</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">(servi avec 3 sauces, légumes sautés, riz)</span>
+                        </div>
+                        <span class="item-price">25DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">Escalope au curry avec fruit sec</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">(servi avec 3 sauces, légumes sautés, riz)</span>
+                        </div>
+                        <span class="item-price">25DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">Côte à l'os poêlé ou filet de boeuf poêlé</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">(servi avec 3 sauces)</span>
+                        </div>
+                        <span class="item-price">30DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">Plat côte de boeuf brisé</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">servi avec 3 sauces et champignons (2pax)</span>
+                        </div>
+                        <span class="item-price">80DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">Carré d'agneau traditionnelle à notre façon</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">(2pax) (servi avec 3 sauces)</span>
+                        </div>
+                        <span class="item-price">80DT</span>
+                    </div>
+
+                    <h2 class="category-heading title-case" style="margin-top: var(--spacing-xl);">Nos plats (Section 2)</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">BROCHETTES MIXTE À LA PLANCHE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">30DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=200&h=200&fit=crop" alt="ÉMINCÉ DE POULET À LA CRÈME ET CHAMPIGNONS" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">ÉMINCÉ DE POULET À LA CRÈME ET CHAMPIGNONS</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">28DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=200&h=200&fit=crop" alt="POISSON DU JOUR" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">POISSON DU JOUR</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">25DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1598103441155-3f5bc3d7de1a?w=200&h=200&fit=crop" alt="DEMI-POULET GRILLÉ" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">DEMI-POULET GRILLÉ</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">26DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=200&h=200&fit=crop" alt="CHEESE CHICKEN BOWLS" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CHEESE CHICKEN BOWLS</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Spicy cheese, sauce crispy chicken, frite.</span>
+                        </div>
+                        <span class="item-price">20DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="boissons" style="background-image: url('https://images.unsplash.com/photo-1546173159-315724a31696?w=1600');">
+                    <h2 class="category-heading">Cafés</h2>
+                    <div class="multi-price-header">
+                        <span></span>
+                        <span>GRAIN</span>
+                        <span>CAPSULE</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">ESPRESSO</span>
+                        <span class="item-price">5DT</span>
+                        <span class="item-price">7DT</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">CAFÉ AMÉRICAIN</span>
+                        <span class="item-price">5DT</span>
+                        <span class="item-price">7DT</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">CAPPUCIN</span>
+                        <span class="item-price">7DT</span>
+                        <span class="item-price">8DT</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">CAFÉ LATTE/ DIRECT</span>
+                        <span class="item-price">7DT</span>
+                        <span class="item-price">8DT</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">CAPPUCCINO</span>
+                        <span class="item-price">7DT</span>
+                        <span class="item-price">8DT</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name accent-price">SUPPLÉMENT AROME</span>
+                        <span class="item-price accent-price">2DT</span>
+                        <span class="item-price accent-price">3DT</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">CAFE TURC</span>
+                        <span class="item-price">5DT</span>
+                        <span class="item-price">6DT</span>
+                    </div>
+
+                    <h2 class="category-heading" style="margin-top: var(--spacing-xl);">Thés</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">THÉ VERT DOWNTOWN</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">4.5DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1597318130921-b0e71bd6bda3?w=200&h=200&fit=crop" alt="THÉ AUX AMANDES" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">THÉ AUX AMANDES</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">7.5DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=200&h=200&fit=crop" alt="THÉ AUX PIGNONS" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">THÉ AUX PIGNONS</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">8DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1587080266227-677cc2a4e76e?w=200&h=200&fit=crop" alt="THÉ INFUSION" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">THÉ INFUSION</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">8DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1563822249366-3a0c1076d88e?w=200&h=200&fit=crop" alt="THÉ BAKLAWA" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">THÉ BAKLAWA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=200&h=200&fit=crop" alt="TÉA BOSS" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">TÉA BOSS</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">(+ Assiette gateau traditionnel)</span>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+
+                    <h2 class="category-heading" style="margin-top: var(--spacing-xl);">Les fantaisies du café</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CAFÉ TIRAMISU</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Arôme, expresso, langue de chat, crème chantilly.</span>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CAFÉ BROWNIES</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Expresso, mousse de lait, arôme, Brownies, crème Chantilly.</span>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">DOWNTOWN CAFÉ</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Expresso, chocolat, glace vanille, sauce caramel, fruits secs, crème Chantilly.</span>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+
+                    <h2 class="category-heading" style="margin-top: var(--spacing-xl);">Cold Drinks</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">EAU 0.5L</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">3DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop" alt="EAU PLATE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">EAU PLATE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">3DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1594737626072-90dc274bc2bd?w=200&h=200&fit=crop" alt="EAU GARCI" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">EAU GARCI</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">5DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=200&h=200&fit=crop" alt="SODA" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SODA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">5DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=200&h=200&fit=crop" alt="ORANGINA" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">ORANGINA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">6DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1622543925917-763c34d1a86e?w=200&h=200&fit=crop" alt="ENERGY DRINK" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">ENERGY DRINK</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">(redbull, shark)</span>
+                        </div>
+                        <span class="item-price">10DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SIROP DE MENTHE OU GRENADINE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">3DT</span>
+                    </div>
+
+                    <h2 class="category-heading" style="margin-top: var(--spacing-xl);">Les plaisirs du chocolat</h2>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=200&h=200&fit=crop" alt="CHOCOLAT GLACÉ" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CHOCOLAT GLACÉ</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=200&h=200&fit=crop" alt="CHOCOLAT CHAUD" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CHOCOLAT CHAUD</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&h=200&fit=crop" alt="CHOCOLAT CHAUD COOKIES" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CHOCOLAT CHAUD COOKIES</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">14DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1542990253-a781e04c0082?w=200&h=200&fit=crop" alt="CHOCOLAT CHAUD DOWNTOWN" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CHOCOLAT CHAUD DOWNTOWN</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Cookies, chocolat chaud, crème Chantilly, caramel beurre salé, fruits secs.</span>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="jus" style="background-image: url('https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=1600');">
+                    <h2 class="category-heading">Jus</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">ORANGE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">9DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1523677011781-c91d1bbe2f9e?w=200&h=200&fit=crop" alt="CITRONNADE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CITRONNADE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">9DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1594475111896-c59e18fc7443?w=200&h=200&fit=crop" alt="FRAISE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">FRAISE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">10DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1622597467836-f3285f2131b8?w=200&h=200&fit=crop" alt="CITRONNADE AUX AMANDES" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CITRONNADE AUX AMANDES</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1622597467848-8b85c48d6a91?w=200&h=200&fit=crop" alt="LEMON MINT JUICE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">LEMON MINT JUICE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">14DT</span>
+                    </div>
+                    <div class="menu-item menu-item-kyufi" style="margin-top: var(--spacing-md);">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">THÉ KYUFI AU CHOIX</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">8DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="pizzas" style="background-image: url('https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1600');">
+                    <h2 class="category-heading">PIZZAS Feu de bois</h2>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=200&h=200&fit=crop" alt="TOMATE (FRAICHE)" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">TOMATE (FRAICHE)</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=200&h=200&fit=crop" alt="MARGARITTA" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">MARGARITTA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=200&fit=crop" alt="TONNARA" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">TONNARA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">18DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=200&h=200&fit=crop" alt="PIZZA REGINA" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">PIZZA REGINA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">19DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200&h=200&fit=crop" alt="FIVE CHEES" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">FIVE CHEES</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">22DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?w=200&h=200&fit=crop" alt="CAMPIONE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CAMPIONE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">23DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=200&h=200&fit=crop" alt="VEGETARIENNE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">VEGETARIENNE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">22DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=200&h=200&fit=crop" alt="4 SAISONS" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">4 SAISONS</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">24DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1590947132387-155cc02f3212?w=200&h=200&fit=crop" alt="NORVÉGIENNE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">NORVÉGIENNE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">26DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=200&fit=crop" alt="MARINARA" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">MARINARA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">28DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=200&h=200&fit=crop" alt="CHICKEN" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CHICKEN</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">28DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="makloub" style="background-image: url('https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=1600');">
+                    <h2 class="category-heading">Makloub - Cornet</h2>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1562053908-09a40a89db51?w=200&h=200&fit=crop" alt="JAMBON" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">JAMBON</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">10DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1639024471283-03518883512d?w=200&h=200&fit=crop" alt="THON" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">THON</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">11DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1576731505424-9e0eef3e79b7?w=200&h=200&fit=crop" alt="POULET GRILLÉ" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">POULET GRILLÉ</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=200&h=200&fit=crop" alt="POULET PANNÉ" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">POULET PANNÉ</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">13DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=200&h=200&fit=crop" alt="VIANDE HACHÉE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">VIANDE HACHÉE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">14DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="panuozzo" style="background-image: url('https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=1600');">
+                    <h2 class="category-heading">Panuozzo</h2>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1576731505424-9e0eef3e79b7?w=200&h=200&fit=crop" alt="POULET GRILLÉ" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">POULET GRILLÉ</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">18DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=200&h=200&fit=crop" alt="POULET PANNÉ" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">POULET PANNÉ</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">18DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=200&h=200&fit=crop" alt="DOWNTOWN" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">DOWNTOWN</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">19DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="VIANDE HACHÉE, poulet grillé" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">VIANDE HACHÉE, poulet grillé</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">19DT</span>
+                    </div>
+                </section>
+
+            </div>
+
+            <div class="menu-column">
+
+                <section class="menu-category-section" data-category="burgers" style="background-image: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1600');">
+                    <h2 class="category-heading">Burgers (Viandes)</h2>
+                    <div class="multi-price-header">
+                        <span></span>
+                        <span>SIMPLE</span>
+                        <span>DOUBLE</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">LAS VEGAS BURGER</span>
+                        <span class="item-price">16DT</span>
+                        <span class="item-price">19DT</span>
+                        <span class="item-description">Sauce cheddar, oignons sautés, champignons grillés, oignons rings, gratin pommes de terre, fromage cheddar.</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">SMOKED BEEF</span>
+                        <span class="item-price">17DT</span>
+                        <span class="item-price">21DT</span>
+                        <span class="item-description">Sauce bourgos, émincé de boeuf, oignon caramélisé, champignons grillés, bacon fumée, fromage raclette.</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">DOWNTOWN BURGER</span>
+                        <span class="item-price">23DT</span>
+                        <span class="item-price">28DT</span>
+                        <span class="item-description">Sauce cocktail, sauce cheddar, roquettes, tomates marinées, oignons caramélisés, oeuf, bacon fumée, fromage raclette.</span>
+                    </div>
+
+                    <h2 class="category-heading" style="margin-top: var(--spacing-xl);">Poulets</h2>
+                    <div class="multi-price-header">
+                        <span></span>
+                        <span>SIMPLE</span>
+                        <span>DOUBLE</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">CRISPY CHIKEN BURGER</span>
+                        <span class="item-price">13DT</span>
+                        <span class="item-price">16DT</span>
+                        <span class="item-description">Sauce cocktail, laitues, oignons caramélisés, sauce cheddar, poulet pané, fromage cheddar.</span>
+                    </div>
+                    <div class="multi-price-item">
+                        <span class="item-name">MANHATTAN BURGER</span>
+                        <span class="item-price">17DT</span>
+                        <span class="item-price">20DT</span>
+                        <span class="item-description">Sauce smoky, roquettes, champignons sautés, oignons caramélisés, jambons fumés, suprême de poulet, fromage cheddar.</span>
+                    </div>
+                    <p class="category-info">TOUS LES BURGERS SONT SERVIS AVEC LES FRITES ET 2 CHOIX DE SAUCE.</p>
+                </section>
+
+                <section class="menu-category-section" data-category="sandwich" style="background-image: url('https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=1600');">
+                    <h2 class="category-heading">Sandwich</h2>
+                    <h3 class="sandwich-subheading">Poulet / Viande</h3>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=200&h=200&fit=crop" alt="POULET À LA PLANCHE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">POULET À LA PLANCHE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Sauce cocktail, laitues, tomates, oignons caramélisés et poulet grillé.</span>
+                        </div>
+                        <span class="item-price">11DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CRUNCHY CHIKEN</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Sauce cocktail, laitues, tomates, oignons caramélisés, poulet pané et sauce fromage.</span>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">MEXICAN SANDWICH</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Sauce cocktail, laitues, tomates, oignons caramélisés, poulet pané, sauce fromage, piment fort et sauce piquante.</span>
+                        </div>
+                        <span class="item-price">13DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">ROSTED BEEF</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Smocky sauce, ice berg, tomates, champignons sautés, bacon du boeuf et viande hachée.</span>
+                        </div>
+                        <span class="item-price">14DT</span>
+                    </div>
+                    <div class="menu-item accent-price">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SUPPLÉMENT FROMAGE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">3.5DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=200&h=200&fit=crop" alt="PANINI AU CHOIX AVEC FRITES" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">PANINI AU CHOIX AVEC FRITES</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Jambon, thon, escalope.</span>
+                        </div>
+                        <span class="item-price">14DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">BAGUETTES FARCIES</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Poulet grillé ou pané ou viande hachée ou thon ou jambon ou saucisse ou bacon de boeuf ou choizo.</span>
+                        </div>
+                        <span class="item-price">14DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="milkshakes" style="background-image: url('https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=1600');">
+                    <h2 class="category-heading">Milkshakes</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">MILKSHAKE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Oreo, nutella, Spéculoos, Kit Kat, Kinder, Ferrero, Snickers, Bounty.</span>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">MILKSHAKE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Vanille, chocolat, fraise, noisette.</span>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">MILKSHAKE BERRY OREO</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Crème vanille, fruits rouge, Oreo.</span>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">MILKSHAKE BIG CHOC</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Glace vanille, Oreo, Kinder, Nutella.</span>
+                        </div>
+                        <span class="item-price">18DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">MILKSHAKE EXOTIQUE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Ananas, citron, mangue, glace.</span>
+                        </div>
+                        <span class="item-price">18DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="jwajem" style="background-image: url('https://images.unsplash.com/photo-1488477181946-6428a0291777?w=1600');">
+                    <h2 class="category-heading">Jwajem</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">JWAJEM SFAX I (classique)</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="JWAJEM SWEET (fruits)" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">JWAJEM SWEET (fruits)</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="JWAJEM DOWNTOWN (mixte)" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">JWAJEM DOWNTOWN (mixte)</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">18DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="smoothie-bowl" style="background-image: url('https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=1600');">
+                    <h2 class="category-heading">Smoothie bowl</h2>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="RED SMOOTHIE" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">RED SMOOTHIE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="GRANULA" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">GRANULA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Granula, banana, fruits secs, noix de coco, fruits rouges.</span>
+                        </div>
+                        <span class="item-price">17DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SMOOTHIE LICORNE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Ananas, amande effilée, puré de mangue.</span>
+                        </div>
+                        <span class="item-price">17DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="mojitos" style="background-image: url('https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1600');">
+                    <h2 class="category-heading">Mojitos</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">VIRGIN CLASIC MOJITO</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="THE RED (fruits rouges)" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">THE RED (fruits rouges)</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">12DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="ROSEBERY COLA" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">ROSEBERY COLA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">13DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="MELON BIG POWER" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">MELON BIG POWER</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="HAWAI MOJITO (boisson Downtown)" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">HAWAI MOJITO (boisson Downtown)</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="APPEL MOJITO (boisson Downtown)" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">APPEL MOJITO (boisson Downtown)</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="SCHWEPPES MOJITO" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SCHWEPPES MOJITO</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="FANTA MOJITO (boisson Downtown)" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">FANTA MOJITO (boisson Downtown)</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                    <div class="menu-item accent-price">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">GRANITE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="cocktails" style="background-image: url('https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=1600');">
+                    <h2 class="category-heading">Cocktails</h2>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="COKTAIL FRUIT DE SAISON" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">COKTAIL FRUIT DE SAISON</span>
+                                <span class="item-separator"></span>
+                            </div>
+                        </div>
+                        <span class="item-price">13DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="RED MOON" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">RED MOON</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Fruits de bois, fraise, banane, glace vanille.</span>
+                        </div>
+                        <span class="item-price">14DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">TRI-CITY</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Banane, datte, miel, fruits secs.</span>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">PINACOLADA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Ananas, noix de coco.</span>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">EXOTIQUE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Citron, kiwi, ananas et boule de glace citron.</span>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">SMASHTIME</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Kiwi, fruit de passion, banane.</span>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CHARGED</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Fruits de saison, fruits secs.</span>
+                        </div>
+                        <span class="item-price">18DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">THE STORY</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Avocat, lait, fruits secs, pignons, ice cream.</span>
+                        </div>
+                        <span class="item-price">19DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="frappoccinos" style="background-image: url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=1600');">
+                    <h2 class="category-heading">Frappoccinos</h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">NOISETTE</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Crème glacée, noisette, chantilly.</span>
+                        </div>
+                        <span class="item-price">14DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">CARAMEL</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Crème glacée, caramel, chantilly.</span>
+                        </div>
+                        <span class="item-price">14DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">TWIX</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Crème glacée, Twix, chantilly.</span>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">OREO</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Crème glacée, Oreo, chantilly.</span>
+                        </div>
+                        <span class="item-price">15DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">NUTELLA</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Crème glacée, Nutella, crème chantilly.</span>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">BLACK CHOC</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Crème glacée, Oreo, Nutella, chocolat noir.</span>
+                        </div>
+                        <span class="item-price">16DT</span>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" id="detox" data-category="detox" style="background-image: url('https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=1600');">
+                    <h2 class="category-heading heading-with-price">
+                        <span>Détox</span>
+                        <span class="heading-price">16DT</span>
+                    </h2>
+                    <div class="menu-item">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">HEALTHY</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Pomme, carotte, gingembre.</span>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="INDIAN SUMMER" class="item-image" loading="lazy">
+                        <div class="item-content">
+                            <div class="item-header">
+                                <span class="item-name">INDIAN SUMMER</span>
+                                <span class="item-separator"></span>
+                            </div>
+                            <span class="item-description">Ananas, kiwi, gingembre.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="menu-category-section" data-category="breakfast" style="background-image: url('https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=1600');">
+                    <h2 class="category-heading title-case">Petits Déjeuners</h2>
+                    <article class="menu-item-breakfast">
+                        <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=300" alt="Quick" class="breakfast-image" loading="lazy">
+                        <div class="breakfast-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Quick</h3>
+                            <span class="item-price">9DT</span>
+                        </div>
+                        <p class="item-description">Café ou thé, bouteille d'eau 0.5 L, jus de fruit frais, viennoiserie nature ou pain au chocolat.</p>
+                        </div></article>
+                    <article class="menu-item-breakfast">
+                        <img src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=300" alt="Downtown" class="breakfast-image" loading="lazy">
+                        <div class="breakfast-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Downtown</h3>
+                            <span class="item-price">18DT</span>
+                        </div>
+                        <p class="item-description">Café ou thé, bouteille d'eau 0.5 L, jus de fruit frais, viennoiserie nature ou pain au chocolat, corbeille de pain, mleoui, tartine parisienne au beurre, confiture, chocolat, yaourt maison, mini-gaufres, assortiment de charcuterie, fromage, jambon, salami de boeuf, omelette au fromage.</p>
+                        </div></article>
+                    <article class="menu-item-breakfast">
+                        <img src="https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?w=300" alt="Healthy" class="breakfast-image" loading="lazy">
+                        <div class="breakfast-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Healthy</h3>
+                            <span class="item-price">20DT</span>
+                        </div>
+                        <p class="item-description">Café ou thé au choix, bouteille d'eau 0.5L, jus de fruits frais, yaourt fait maison, Healthy granola, huile d'olive mixte de salade verte, pain perdu salé, pain perdu sucré, oeuf Bénédicte.</p>
+                        </div></article>
+                    <article class="menu-item-breakfast">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300" alt="Berbère (pour deux personnes)" class="breakfast-image" loading="lazy">
+                        <div class="breakfast-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Berbère (pour deux personnes)</h3>
+                            <span class="item-price">34DT</span>
+                        </div>
+                        <p class="item-description">2 Cafés ou thés, 2 bouteilles d'eau 0.5 L, 2 jus de fruit frais, 2 viennoiseries natures ou pain au chocolat, corbeille de pain, mleoui, tartine parisienne au beurre, confiture, chocolat, miel, 2 yaourts maison, 2 minis gaufres, assortiment de charcuterie, fromage, jambon, salami de boeuf, 2 omelettes au fromage, assiette kafteji.</p>
+                        </div></article>
+                    <article class="menu-item-breakfast">
+                        <img src="https://images.unsplash.com/photo-1617093727343-374698b1b08d?w=300" alt="Tunisian (pour deux personnes)" class="breakfast-image" loading="lazy">
+                        <div class="breakfast-content">
+                        <div class="item-header">
+                            <h3 class="item-name">Tunisian (pour deux personnes)</h3>
+                            <span class="item-price">38DT</span>
+                        </div>
+                        <p class="item-description">2 Cafés ou thés, 2 bouteilles d'eau 0.5 L, 2 jus de fruit frais, 2 viennoiseries natures ou pain au chocolat, corbeille de pain, mleoui, tartine parisienne au beurre, confiture, chocolat, miel, chamia, bsisa, 2 yaourts maison, 2 minis pancakes, au chocolat, assortiment de charcuterie, fromage, jambon, salami de boeuf, fromage sicilien, ojja nature, salade verte, droo, harissa, thon, olive, ricotta, assiette tounsii.</p>
+                        </div></article>
+                </section>
+
+                <section class="menu-category-section" data-category="kids" style="background-image: url('https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1600');">
+                    <h2 class="category-heading">KIDS</h2>
+                    <article class="detailed-item-article">
+                        <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=300" alt="KIDS" class="detailed-image" loading="lazy">
+                        <div class="detailed-content">
+                        <div class="item-header">
+                            <span class="item-name">KIDS</span>
+                            <span class="item-price">12DT</span>
+                        </div>
+                        <p class="item-description">Chocolat au lait, jus, bol de céréales, yaourt, Mini crêpe.</p>
+                        </div></article>
+                </section>
+
+                <section class="menu-category-section" data-category="mio" style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600');">
+                    <h2 class="category-heading title-case">Mio (pour 4 personnes)</h2>
+                    <article class="detailed-item-article">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300" alt="Mio" class="detailed-image" loading="lazy">
+                        <div class="detailed-content">
+                        <div class="item-header">
+                            <span class="item-name">Mio</span>
+                            <span class="item-price">75DT</span>
+                        </div>
+                        <p class="item-description">4 Cafés ou thé, 4 bouteilles d'eau 0.5 L, 4 jus de fruit frais, 4 viennoiseries nature ou chocolat, corbeille de pain, mleoui, tartine parisienne au beurre, confiture, chocolat, miel, bsisa, 4 yaourts maison, 4 minis pancakes au chocolat, 4 nuggets panés, assortiment de charcuterie, fromage, jambon, salami de boeuf, fromage sicilien, pepperoni, ojja ou omelette nature, salade vert, droo, harissa, thon, olive, ricotta, assiette kafteji, assiette tounsii.</p>
+                        </div></article>
+                </section>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterInputs = document.querySelectorAll('input[name="menu-filter"]');
+            const menuSections = document.querySelectorAll('.menu-category-section');
+
+            function filterMenu() {
+                let selectedCategory = document.querySelector('input[name="menu-filter"]:checked').value;
+
+                menuSections.forEach(section => {
+                    if (selectedCategory === 'all' || section.dataset.category === selectedCategory) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            }
+
+            filterInputs.forEach(input => {
+                input.addEventListener('change', filterMenu);
+            });
+
+            // Initial filter application based on default checked radio button
+            filterMenu();
+        });
+    </script>
+</body>
+</html>
